@@ -7,6 +7,7 @@
     "findup": "^0.1.5",
     "lodash": "^4.17.4",
     "mocha": "^3.2.0",
+    "recursive-readdir": "^2.1.0",
     "should": "^11.2.0"
   },
   "devDependencies": {

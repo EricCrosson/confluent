@@ -8,11 +8,13 @@ const _ = require('lodash');
 const index = require('../index.js');
 const cli = require('../cli.js');
 
+const testDir = __dirname;
+
 
 describe('index', function () {
     describe('#findRcFile', function() {
         it('should find a .rc file', function(done) {
-            index.findRcFile(__dirname + '/test')
+            index.findRcFile(testDir)
                 .then(data => {
                     assert.equal(data, __dirname + '/.confluent.json')
                     done();
@@ -33,10 +35,10 @@ describe('index', function () {
     });
 
     describe('#findWikiSources', function() {
-        xit('should be able to find all local wiki sources', function(done) {
-            index.findWikiSources()
+        it('should be able to find all local wiki sources', function(done) {
+            index.findWikiSources(testDir)
                 .then(data => {
-                    console.log(data);
+                    assert.equal(8, data.length);
                     done();
                 }).catch(err => done(err))
         });
