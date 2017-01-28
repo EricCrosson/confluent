@@ -1,5 +1,7 @@
 'use strict';
 
+const Confluent = require('./confluent.js');
+
 const _ = require('lodash');
 const path = require('path');
 
@@ -20,7 +22,8 @@ function confluent() {
                 let rcfile = data;
                 let rc = require(rcfile);
                 // console.log(prettyjson.render(rc));
-                resolve(new Confluence(rc));
+                let session = new Confluence(rc);
+                resolve(new Confluent(session));
             }).catch(err => reject('no rc file found'));
     });
 }
@@ -40,6 +43,8 @@ function findWikiSources(searchdir) {
         });
     });
 }
+
+// RESUME: function getRemoteWikis MatchingLocalWikis
 
 /**
  * Test a file's extension against known markdown types.
@@ -71,6 +76,14 @@ function findRcFile(searchdir) {
     });
 }
 
+/**
+ * Send a command directly to the api
+ */
+function raw(func) {
+
+}
+
+module.exports.raw = raw;
 module.exports.findRcFile = findRcFile;
 module.exports.confluent = confluent;
 module.exports.findWikiSources = findWikiSources;

@@ -25,10 +25,10 @@ describe('index', function () {
     describe('#confluent', function() {
         it('should authenticate with confluence server', function(done) {
             index.confluent()
-                .then(data => {
-                    data.getContentByPageTitle('ipp', 'rapt user guide', function(err, res) {
+                .then(confluent => {
+                    confluent.session.getContentByPageTitle('ipp', 'rapt user guide', function(err, res) {
                         assert.strictEqual(res.statusCode, undefined);
-                        done() ;
+                        done();
                     });
                 }).catch(err => done(err))
         });
@@ -38,9 +38,17 @@ describe('index', function () {
         it('should be able to find all local wiki sources', function(done) {
             index.findWikiSources(testDir)
                 .then(data => {
+                    console.log(data);
                     assert.equal(8, data.length);
                     done();
                 }).catch(err => done(err))
         });
+    });
+});
+describe('client code', function() {
+    xit('should be simple', function(done) {
+        index.confluent().then(session => {
+            session.sync();
+        }).catch(err => done(err));
     });
 });
