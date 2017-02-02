@@ -38,8 +38,8 @@ function findWikiSources(searchdir) {
     return new Promise(function(resolve, reject) {
         recursive(searchdir, function(err, files) {
             if (err) { reject('no markdown files detected'); }
-            const markdown = _.filter(files, elt => isMarkdown(elt));
-            resolve(markdown);
+            const markdownFiles = _.filter(files, elt => isMarkdown(elt));
+            resolve(markdownFiles);
         });
     });
 }
