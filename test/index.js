@@ -49,7 +49,7 @@ describe('confluent', function () {
             confluent.findLocalWikis(testDir)
                 .then(data => {
                     console.log(data);
-                    assert.equal(8, data.length);
+                    assert.equal(7, data.length);
                     done();
                 }).catch(err => done(err));
         });
