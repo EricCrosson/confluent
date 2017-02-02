@@ -12,41 +12,45 @@ const rcfilename = '.confluent.json';
 
 // Future feature: add 'start managing wiki page through confluent'
 
+function confluent() {
+}
+
+/**
+ * Create a new Confluence session.
+ */
+function authenticate() {
+    findRcFile()
+        .then(data => {
+            let rcfile = data;
+            let rc = require(rcfile);
+            // console.log(prettyjson.render(rc));
+            this.session = new Confluence(rc);
+            return this;
+        }).catch(err => reject('no rc file found'));
+}
+
 /**
  * Commit the local, standardized wikis into git.
  */
-function prepareLocalWikis() {
+confluent.prototype.prepareLocalWikis = function() {
     // TODO: implement
-    return new Promise(function (resolve, reject) {
-        findLocalWikis()
-            .then(wikis => {
-                // prediction: this will be refactored massively
-                standardizeLocalWikis(wikis)
-                    .then(commitLocalWikis()
-                          .then(resolve())
-                          .catch(err => reject(err)))
-                    .catch(err => reject(err))})
-            .catch(err => reject(err))
-    })
+    // findLocalWikis()
+    // standardizeLocalWikis()
+    // commitLocalWikis()
+    return this;
 }
 
 /**
  * Commit into git each remote wiki converted into the same format as
  * its corresponding local wiki.
  */
-function prepareRemoteWikis(session) {
+confluent.prototype.prepareRemoteWikis = function(session) {
     // TODO: implement
-    return new Promise(function (resolve, reject) {
-        let localWikis = _.map(findLocalWikis(), fileToWiki)
-        downloadRemoteWikis(session, localWikis)
-            .then(downloaded => {
-                standardizeDownloadedWikis(downloaded)
-                    .then(commitDownloadedWikis()
-                          .then(resolve())
-                          .catch(err => reject(err)))
-                    .catch(err => reject(err))})
-            .catch(err => reject(err))
-    })
+    // let localWikis = _.map(findLocalWikis(), fileToWiki)
+    // let downloadedWikis = downloadRemoteWikis(session, localWikis)
+    // standardizeDownloadedWikis(downloadedWikis)
+    // commitDownloadedWikis()
+    return this;
 }
 
 /**
@@ -57,40 +61,21 @@ function downloadRemoteWikis(session, wikis) {
 }
 
 /**
- * Create a new Confluence session.
+ * Merge the local wikis into remote and check for conflicts.
  */
-function merge() {
+confluent.prototype.merge = function() {
     // TODO: implement
-    return new Promise(function (resolve, reject) {
-
-    })
+    return this;
 }
 
 /**
- * Create a new Confluence session.
+ * Push the new remote wikis to Confluence.
  */
-function push(session) {
+confluent.prototype.push = function(session) {
     // TODO: implement
-    return new Promise(function (resolve, reject) {
-
-    })
+    return this;
 }
 
-/**
- * Create a new Confluence session.
- */
-function authenticate() {
-    return new Promise(function(resolve, reject) {
-        findRcFile()
-            .then(data => {
-                let rcfile = data;
-                let rc = require(rcfile);
-                // console.log(prettyjson.render(rc));
-                let session = new Confluence(rc);
-                resolve(session);
-            }).catch(err => reject('no rc file found'));
-    });
-}
 
 /**
  * Convert a file path into a wiki address.
@@ -159,10 +144,4 @@ function findRcFile(searchdir) {
     });
 }
 
-module.exports.findRcFile = findRcFile;
-module.exports.authenticate = authenticate;
-module.exports.findLocalWikis = findLocalWikis;
-module.exports.prepareLocalWikis = prepareLocalWikis;
-module.exports.prepareRemoteWikis = prepareRemoteWikis;
-module.exports.merge = merge;
-module.exports.push = push;
+module.exports = confluent;
