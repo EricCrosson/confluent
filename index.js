@@ -12,6 +12,8 @@ const recursive = require('recursive-readdir');
 
 const rcfilename = '.confluent.json';
 
+// resume: write the client code
+
 /**
  * Create a new Confluence session.
  */
