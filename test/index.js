@@ -5,16 +5,16 @@ const should = require('should');
 
 const _ = require('lodash');
 
-const index = require('../index.js');
+const confluent = require('../confluent.js');
 const cli = require('../cli.js');
 
 const testDir = __dirname;
 
 
-describe('index', function () {
+describe('confluent', function () {
     describe('#findRcFile', function() {
         it('should find a .rc file', function(done) {
-            index.findRcFile(testDir)
+            confluent.findRcFile(testDir)
                 .then(data => {
                     assert.equal(data, __dirname + '/.confluent.json')
                     done();
@@ -22,11 +22,11 @@ describe('index', function () {
         });
     });
 
-    // TODO: refactor out
-    describe('#confluent', function() {
+    // TODO: refactor out (?)
+    describe('#authenticate', function() {
         xit('should authenticate with confluence server', function(done) {
-            index.confluent()
-                .then(confluent => {
+            confluent.authenticate()
+                .then(session => {
                     confluent.session.getContentByPageTitle('ipp', 'rapt user guide', function(err, res) {
                         assert.strictEqual(res.statusCode, undefined);
                         done();
@@ -36,30 +36,22 @@ describe('index', function () {
     });
     describe('#downloadRemoteWikis', function() {
         xit('should be able to convert local files into remote wikis', function(done) {
-            index.downloadRemoteWikis(testDir).then(data => {
-                console.log(data);
+            confluent.downloadRemoteWikis(testDir).then(data => {
+                // console.log(data);
                 done();
             }).catch(err => done(err));
         });
     });
 
     // TODO: refactor out
-    describe('#findWikiSources', function() {
+    describe('#findLocalWikis', function() {
         it('should be able to find all local wiki sources', function(done) {
-            index.findWikiSources(testDir)
+            confluent.findLocalWikis(testDir)
                 .then(data => {
-                    // console.log(data);
+                    console.log(data);
                     assert.equal(8, data.length);
                     done();
                 }).catch(err => done(err));
         });
-    });
-});
-
-describe('client code', function() {
-    xit('should be simple', function(done) {
-        index.confluent().then(session => {
-            session.sync();
-        }).catch(err => done(err));
     });
 });
