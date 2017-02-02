@@ -44,7 +44,19 @@ function findWikiSources(searchdir) {
     });
 }
 
+// TODO: remove need for passing argument into this function
 // RESUME: function getRemoteWikis MatchingLocalWikis
+function downloadRemoteWikis(dir) {
+    return new Promise(function(resolve,reject) {
+        findWikiSources(dir).then(function(specs) {
+            let wikis = _.map(specs, function(file) {
+                return [path.dirname(file), path.basename(file)];
+            });
+            console.log(wikis);
+            resolve(wikis);
+        });
+    });
+}
 
 /**
  * Test a file's extension against known markdown types.
@@ -87,3 +99,4 @@ module.exports.raw = raw;
 module.exports.findRcFile = findRcFile;
 module.exports.confluent = confluent;
 module.exports.findWikiSources = findWikiSources;
+module.exports.downloadRemoteWikis = downloadRemoteWikis;
