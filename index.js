@@ -51,7 +51,7 @@ function downloadRemoteWikis(dir) {
         findWikiSources(dir).then(function(specs) {
             let wikis = _.map(specs, function(file) {
                 return [path.dirname(file), path.basename(file)];
-            });
+            })
             console.log(wikis);
             resolve(wikis);
         });
