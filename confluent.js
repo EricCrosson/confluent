@@ -17,9 +17,17 @@ const rcfilename = '.confluent.json';
  */
 function prepareLocalWikis() {
     // TODO: implement
-    // findLocalWikis()
-    // standardizeLocalWikis()
-    // commitLocalWikis()
+    return new Promise(function (resolve, reject) {
+        findLocalWikis()
+            .then(wikis => {
+                // prediction: this will be refactored massively
+                standardizeLocalWikis(wikis)
+                    .then(commitLocalWikis()
+                          .then(resolve())
+                          .catch(err => reject(err)))
+                    .catch(err => reject(err))})
+            .catch(err => reject(err))
+    })
 }
 
 /**
@@ -28,10 +36,17 @@ function prepareLocalWikis() {
  */
 function prepareRemoteWikis(session) {
     // TODO: implement
-    // let localWikis = _.map(findLocalWikis(), fileToWiki)
-    // let downloadedWikis = downloadRemoteWikis(session, localWikis)
-    // standardizeDownloadedWikis(downloadedWikis)
-    // commitDownloadedWikis()
+    return new Promise(function (resolve, reject) {
+        let localWikis = _.map(findLocalWikis(), fileToWiki)
+        downloadRemoteWikis(session, localWikis)
+            .then(downloaded => {
+                standardizeDownloadedWikis(downloaded)
+                    .then(commitDownloadedWikis()
+                          .then(resolve())
+                          .catch(err => reject(err)))
+                    .catch(err => reject(err))})
+            .catch(err => reject(err))
+    })
 }
 
 /**
@@ -46,6 +61,9 @@ function downloadRemoteWikis(session, wikis) {
  */
 function merge() {
     // TODO: implement
+    return new Promise(function (resolve, reject) {
+
+    })
 }
 
 /**
@@ -53,6 +71,9 @@ function merge() {
  */
 function push(session) {
     // TODO: implement
+    return new Promise(function (resolve, reject) {
+
+    })
 }
 
 /**
