@@ -39,11 +39,11 @@ describe('index', function () {
             index.downloadRemoteWikis(testDir).then(data => {
                 console.log(data);
                 done();
-            });
+            }).catch(err => done(err));
         });
     });
 
-             // TODO: refactor out
+    // TODO: refactor out
     describe('#findWikiSources', function() {
         it('should be able to find all local wiki sources', function(done) {
             index.findWikiSources(testDir)
@@ -51,7 +51,7 @@ describe('index', function () {
                     // console.log(data);
                     assert.equal(8, data.length);
                     done();
-                }).catch(err => done(err))
+                }).catch(err => done(err));
         });
     });
 });
