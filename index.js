@@ -54,7 +54,7 @@ function downloadRemoteWikis(dir) {
             })
             console.log(wikis);
             resolve(wikis);
-        });
+        }).catch(err => console.log(err));
     });
 }
 
