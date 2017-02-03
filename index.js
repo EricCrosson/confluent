@@ -12,7 +12,7 @@ const confluent = require ('./confluent.js');
 
 function main(args) {
     console.log("In the session")
-    confluent.authenticate(args)
+    new confluent().authenticate(args)
         .prepareLocalWikis()
         .prepareRemoteWikis()
         .merge()

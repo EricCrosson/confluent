@@ -14,7 +14,7 @@ const testDir = __dirname;
 describe('confluent', function () {
     describe('#findRcFile', function() {
         it('should find a .rc file', function(done) {
-            confluent.findRcFile(testDir)
+            new confluent().findRcFile(testDir)
                 .then(data => {
                     assert.equal(data, __dirname + '/.confluent.json')
                     done();
@@ -46,7 +46,7 @@ describe('confluent', function () {
     // TODO: refactor out
     describe('#findLocalWikis', function() {
         it('should be able to find all local wiki sources', function(done) {
-            confluent.findLocalWikis(testDir)
+            new confluent().findLocalWikis(testDir)
                 .then(data => {
                     console.log(data);
                     assert.equal(7, data.length);

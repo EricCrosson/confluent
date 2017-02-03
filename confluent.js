@@ -88,7 +88,7 @@ function fileToWiki(file) {
 /**
  * Assume markup sources appear in directory of invocation.
  */
-function findLocalWikis(searchdir) {
+confluent.prototype.findLocalWikis = function(searchdir) {
     if (typeof searchdir === 'undefined') {
         searchdir = process.cwd();
     }
@@ -128,7 +128,7 @@ function isMarkdown(file) {
 /**
  * Find user's Confluence credentials.
  */
-function findRcFile(searchdir) {
+confluent.prototype.findRcFile = function(searchdir) {
     if (typeof searchdir === 'undefined') {
         searchdir = __dirname;
     }
