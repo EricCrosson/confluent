@@ -12,6 +12,15 @@ const testDir = __dirname;
 
 
 describe('confluent', function () {
+    it('should quit if uncommitted changes are present', function() {
+        // todo: ensure no uncommitted changes
+        new confluent();
+        // todo: assert here
+        // todo: add uncommitted change
+        new confluent();
+        // todo: assert never get here
+    })
+
     describe('#findRcFile', function() {
         it('should find a .rc file', function(done) {
             new confluent().findRcFile(testDir)
@@ -22,16 +31,18 @@ describe('confluent', function () {
         });
     });
 
-    // TODO: refactor out (?)
+    // TODO: fix
     describe('#authenticate', function() {
-        xit('should authenticate with confluence server', function(done) {
-            confluent.authenticate()
-                .then(session => {
-                    confluent.session.getContentByPageTitle('ipp', 'rapt user guide', function(err, res) {
-                        assert.strictEqual(res.statusCode, undefined);
-                        done();
-                    });
-                }).catch(err => done(err))
+        it('should authenticate with confluence server', function(done) {
+            const result = new confluent().authenticate();
+            console.log("Result: " + (result instanceof Error) + result)
+            // result.session.getContentByPageTitle("space-name", "page-title", function(err, data) {
+            //     // do something interesting with data; for instance,
+            //     // data.results[0].body.storage.value contains the stored markup for the first
+            //     // page found in space 'space-name' matching page title 'page-title'
+            //     console.log(data);
+            // });
+            done(result);
         });
     });
     describe('#downloadRemoteWikis', function() {
@@ -40,6 +51,14 @@ describe('confluent', function () {
                 // console.log(data);
                 done();
             }).catch(err => done(err));
+        });
+    });
+
+    describe('#prepareLocalWikis', function() {
+        it('should commit standardized wikis into git', function() {
+            new confluent().prepareLocalWikis();
+            // fixme: parametrize start branch in rc file
+            // assert that each file in git:confluent-local is a transform of master
         });
     });
 

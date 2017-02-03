@@ -13,20 +13,28 @@ const rcfilename = '.confluent.json';
 // Future feature: add 'start managing wiki page through confluent'
 
 function confluent() {
+    this.quitIfUncommittedChanges();
+}
+
+confluent.prototype.quitIfUncommittedChanges = function() {
+    // TODO: implement
 }
 
 /**
  * Create a new Confluence session.
  */
-function authenticate() {
-    findRcFile()
+confluent.prototype.authenticate = function() {
+    this.findRcFile()
         .then(data => {
             let rcfile = data;
             let rc = require(rcfile);
             // console.log(prettyjson.render(rc));
             this.session = new Confluence(rc);
             return this;
-        }).catch(err => reject('no rc file found'));
+        }).catch(err => {
+            console.log("Here" + err)
+            return err;
+        });
 }
 
 /**
