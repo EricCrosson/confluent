@@ -6,13 +6,20 @@ const path = require('path');
 const findup = require('findup');
 const Confluence = require('confluence-api');
 const prettyjson = require('prettyjson');
-const recursive = require('recursive-readdir');
+const recursive = require('recursive-readdir-sync');
 
 const rcfilename = '.confluent.json';
+
+
+
+var defaultSession = 'empty';
+
 
 // Future feature: add 'start managing wiki page through confluent'
 
 function confluent() {
+    if (this.constructor !== confluent) return new confluent()
+    this.session = defaultSession
     this.quitIfUncommittedChanges();
 }
 
@@ -24,17 +31,11 @@ confluent.prototype.quitIfUncommittedChanges = function() {
  * Create a new Confluence session.
  */
 confluent.prototype.authenticate = function() {
-    this.findRcFile()
-        .then(data => {
-            let rcfile = data;
-            let rc = require(rcfile);
-            // console.log(prettyjson.render(rc));
-            this.session = new Confluence(rc);
-            return this;
-        }).catch(err => {
-            console.log("Here" + err)
-            return err;
-        });
+    let rcfile = this.findRcFile()
+    let rc = require(rcfile);
+    // console.log(prettyjson.render(rc));
+    this.session = new Confluence(rc);
+    return this;
 }
 
 /**
@@ -100,14 +101,12 @@ confluent.prototype.findLocalWikis = function(searchdir) {
     if (typeof searchdir === 'undefined') {
         searchdir = process.cwd();
     }
-    return new Promise(function(resolve, reject) {
-        recursive(searchdir, function(err, files) {
-            if (err) { reject('no markdown files detected'); }
-            const markdownFiles = _.filter(files, elt => isMarkdown(elt));
-            const markdownWikis = _.map(markdownFiles, fileToWiki);
-            resolve(markdownWikis);
-        });
-    });
+    try {
+        const files = recursive(searchdir);
+        const markdownFiles = _.filter(files, elt => isMarkdown(elt));
+        const markdownWikis = _.map(markdownFiles, fileToWiki);
+        return markdownWikis;
+    } catch(err) { throw err; }
 }
 
 // TODO: remove need for passing argument into this function
@@ -140,16 +139,14 @@ confluent.prototype.findRcFile = function(searchdir) {
     if (typeof searchdir === 'undefined') {
         searchdir = __dirname;
     }
-    return new Promise(function(resolve, reject) {
-        let rcfile;
-        try {
-            let rcDir = findup.sync(searchdir, rcfilename);
-            rcfile = `${rcDir}/${rcfilename}`;
-        } catch(e) {
-            rcfile = false;
-        }
-        resolve(rcfile);
-    });
+    let rcfile;
+    try {
+        let rcDir = findup.sync(searchdir, rcfilename);
+        rcfile = `${rcDir}/${rcfilename}`;
+    } catch(e) {
+        rcfile = false;
+    }
+    return rcfile;
 }
 
 module.exports = confluent;

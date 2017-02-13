@@ -1,5 +1,6 @@
 {
     "username": "marvin",
     "password": "marvin123",
-    "baseUrl": "http://svlengwiki1.shoretel.com:8080"
+    "baseUrl": "http://svlengwiki1.shoretel.com:8080",
+    "branch": "master"
 }
