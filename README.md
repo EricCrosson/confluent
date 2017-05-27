@@ -21,5 +21,21 @@ go get github.com/ericcrosson/confluent/cmd/confluent
 ## Use
 
 ```bash
-confluent [--friendly]
+Usage:
+  confluent [--friendly]
+
+Options:
+  -h --help      Show this screen.
+  -v --version   Show version.
+  -f --friendly  Use the friendly merging-strategy.
 ```
+
+Read more about *confluent workflow* [here](doc/workflow.md).
+
+## Related
+
+- [GNU stow](https://www.gnu.org/software/stow/)
+
+## License
+
+ISC © [Eric Crosson](https://ericcrosson.com)
